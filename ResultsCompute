@@ -1,0 +1,62 @@
+def calcular_resultado(N, m, E, K, solver):
+
+  converge = True
+  iteracoes_ok = True
+
+  # Comprimento de cada volume de controle
+  dx = L / N
+
+  # Intervalo a cada passo de tempo
+  dt = tf / m
+
+  # Domínio discretizado
+  x = np.arange(- dx / 2, L + dx, dx) # Espacial (Método dos volumes fictícios)
+  t = np.linspace(0, tf, m + 1)       # Temporal
+
+  # Condições iniciais
+  u0 = np.cos(np.pi * x / (2 / L)) # Deslocamento
+  p0 = np.sin(np.pi * x / (2 / L)) # Pressão
+
+  U = []
+  P = []
+  c = 0
+  while c <= m:
+    U.append((E * np.pi / (2 * L) + 1) * np.pi / (2 * L) * np.cos(np.pi / (2 * L) * x) * np.exp(- t[c]))
+    P.append((1 + K * np.pi / (2 * L)) * np.pi / (2 * L) * np.sin(np.pi / (2 * L) * x) * np.exp(- t[c]))
+    c += 1
+
+  c = 1
+  iteracoes_max = 1
+
+  u = u0.copy()
+  p = p0.copy()
+
+  while c <= m:
+
+    Rui, Rpi = calcular_residuo(u, p, c, u0, p0, N, E, K, U, P)
+
+    while True:
+
+      u, p = solver(u, p, c, u0, p0, N, E, K, U, P, dx, dt)
+      Ru, Rp = calcular_residuo(u, p, c, u0, p0, N, E, K, U, P)
+      crit_pausa = criterio_pausa(Ru, Rp, Rui, Rpi)
+
+      if crit_pausa < tol or crit_pausa > 1e50:
+        break
+
+      if iteracoes_max > 5e50:
+        iteracoes_ok = False
+        break
+
+      iteracoes_max += 1
+
+    if crit_pausa > 1e50:
+      converge = False
+      break
+
+    u0 = u.copy()
+    p0 = p.copy()
+
+    c += 1
+
+  return u, p, converge, iteracoes_ok
