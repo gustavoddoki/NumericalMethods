@@ -6,7 +6,7 @@ def gauss_seidel_solver(u, p, j, u0, p0, N, U, P, c1, c2, c3, c4, teta=1):
   :param j: time step
   :param u0: solution vector of previous time step for displacement variable (initial condition for the first time step)
   :param p0: solution vector of previous time step for pressure variable (initial condition for the first time step)
-  :param N: números de volumes de controle
+  :param N: quantity of control volumes
   :param U: vector of density of the force applied to the body
   :param P: vector of injection or extraction force of the fluid
   :param c1: coefficient 1
