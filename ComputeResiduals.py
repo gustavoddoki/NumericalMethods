@@ -1,3 +1,6 @@
+import numpy as np
+
+
 def compute_residual(u, p, j, u0, p0, N, E, K, U, P, c1, c2, c3, c4, teta=1):
   """
   This function computes the residual vector of the solution
