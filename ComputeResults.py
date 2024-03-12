@@ -1,3 +1,7 @@
+from ComputeResiduals import calcular_residuo
+import numpy as np
+
+
 def compute_results(N, m, E, K, solver, tol=1e-5):
   """
   This code compute the solution vectors for the one-dimension poroelasticity problem
@@ -54,6 +58,7 @@ def compute_results(N, m, E, K, solver, tol=1e-5):
     :param Rui: residual of the estimative vector of the displacement variable
     :param Rup: residual of the estimative vector of the pressure variable
     :return: pause criteria (ratio between the sum of infinity norms of the solution vectors and the sum of infinity norms of estimative vectors)
+    """
 
     # Infinity norm of the residuals of the solution vectors
     Ru_norm = np.linalg.norm(Ru, np.inf)
