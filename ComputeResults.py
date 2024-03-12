@@ -1,4 +1,4 @@
-def compute_results(N, m, E, K, solver):
+def compute_results(N, m, E, K, solver, tol=1e-5):
   """
   This code compute the solution vectors for the one-dimension poroelasticity problem
   :param N: quantity of control volumes
